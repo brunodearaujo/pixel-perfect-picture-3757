@@ -10,33 +10,64 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as ApiTaxCalculateRouteImport } from './routes/api/tax/calculate'
+import { Route as ApiTaxTablesRouteImport } from './routes/api/tax/tables'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiTaxCalculateRoute = ApiTaxCalculateRouteImport.update({
+  id: '/api/tax/calculate',
+  path: '/api/tax/calculate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiTaxTablesRoute = ApiTaxTablesRouteImport.update({
+  id: '/api/tax/tables',
+  path: '/api/tax/tables',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/tax/calculate': typeof ApiTaxCalculateRoute
+  '/api/tax/tables': typeof ApiTaxTablesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/tax/calculate': typeof ApiTaxCalculateRoute
+  '/api/tax/tables': typeof ApiTaxTablesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/tax/calculate': typeof ApiTaxCalculateRoute
+  '/api/tax/tables': typeof ApiTaxTablesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/api/health' | '/api/tax/calculate' | '/api/tax/tables'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/api/health' | '/api/tax/calculate' | '/api/tax/tables'
+  id:
+    '__root__' | '/' | '/api/health' | '/api/tax/calculate' | '/api/tax/tables'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiHealthRoute: typeof ApiHealthRoute
+  ApiTaxCalculateRoute: typeof ApiTaxCalculateRoute
+  ApiTaxTablesRoute: typeof ApiTaxTablesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +79,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/tax/calculate': {
+      id: '/api/tax/calculate'
+      path: '/api/tax/calculate'
+      fullPath: '/api/tax/calculate'
+      preLoaderRoute: typeof ApiTaxCalculateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/tax/tables': {
+      id: '/api/tax/tables'
+      path: '/api/tax/tables'
+      fullPath: '/api/tax/tables'
+      preLoaderRoute: typeof ApiTaxTablesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiHealthRoute: ApiHealthRoute,
+  ApiTaxCalculateRoute: ApiTaxCalculateRoute,
+  ApiTaxTablesRoute: ApiTaxTablesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
